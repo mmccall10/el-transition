@@ -23,7 +23,7 @@ async function transition(direction, element, animation) {
     addClasses(element, end);
     await afterTransition(element)
     removeClasses(element, end)
-    addClasses(element, genesis)
+    removeClasses(element, genesis)
 }
 
 function addClasses(element, classes) {

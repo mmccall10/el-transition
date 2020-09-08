@@ -1,0 +1,26 @@
+{
+  "name": "el-transition",
+  "version": "0.0.1",
+  "description": "Apply Enter/Leave Transitions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmccall10/el-transition.git"
+  },
+  "keywords": [
+    "transition",
+    "enter",
+    "leave",
+    "css",
+    "animation"
+  ],
+  "author": "Mike McCall",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mmccall10/el-transition/issues"
+  },
+  "homepage": "https://github.com/mmccall10/el-transition#readme"
+}

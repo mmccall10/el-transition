@@ -5,6 +5,10 @@
 npm install el-transition
 ```
 
+```
+yarn add el-transition
+```
+
 ## Purpose
 The purpose of this package is to handle enter/leave transition using classes or data attributes. This is similar to the implementations you find in vue.js and alpine.js.
 

@@ -1,28 +1,29 @@
-export async function enter(element) {
-    element.classList.remove('hidden');
-    await transition('enter', element)
+export async function enter(element, animation=null) {
+    element.classList.remove('hidden')
+    await transition('enter', element, animation)
 }
 
-export async function leave(element) {
-    await transition('leave', element)
-    element.classList.add('hidden');
+export async function leave(element, animation=null) {
+    await transition('leave', element, animation)
+    element.classList.add('hidden')
 }
 
-async function transition(direction, element) {
+async function transition(direction, element, animation) {
     const dataset = element.dataset
+    const animationClass = animation ? `${animation}-${direction}` : direction
     let transition = `transition${direction.charAt(0).toUpperCase() + direction.slice(1)}`
-    const leave = dataset[transition] ? dataset[transition].split(" ") : []
-    const leaveStart = dataset[`${transition}Start`] ? dataset[`${transition}Start`].split(" ") : []
-    const leaveEnd = dataset[`${transition}End`] ? dataset[`${transition}End`].split(" ") : []
-
-    addClasses(element, leave)
-    addClasses(element, leaveStart)
-    await nextFrame();
-    removeClasses(element, leaveStart);
-    addClasses(element, leaveEnd);
+    const genesis = dataset[transition] ? dataset[transition].split(" ") : [animationClass]
+    const start = dataset[`${transition}Start`] ? dataset[`${transition}Start`].split(" ") : [`${animationClass}-start`]
+    const end = dataset[`${transition}End`] ? dataset[`${transition}End`].split(" ") : [`${animationClass}-end`]
+    
+    addClasses(element, genesis)
+    addClasses(element, start)
+    await nextFrame()
+    removeClasses(element, start)
+    addClasses(element, end);
     await afterTransition(element)
-    removeClasses(element, leaveEnd);
-    removeClasses(element, leave);
+    removeClasses(element, end)
+    addClasses(element, genesis)
 }
 
 function addClasses(element, classes) {
@@ -36,7 +37,7 @@ function removeClasses(element, classes) {
 function nextFrame() {
     return new Promise(resolve => {
         requestAnimationFrame(() => {
-            requestAnimationFrame(resolve);
+            requestAnimationFrame(resolve)
         });
     });
 }
@@ -49,7 +50,7 @@ function afterTransition(element) {
                 .replace('s', '')
         ) * 1000;
         setTimeout(() => {
-            resolve();
-        }, duration);
+            resolve()
+        }, duration)
     });
 }

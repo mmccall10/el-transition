@@ -44,11 +44,9 @@ function nextFrame() {
 
 function afterTransition(element) {
     return new Promise(resolve => {
-        const duration = Number(
-            getComputedStyle(element)
-                .transitionDuration
-                .replace('s', '')
-        ) * 1000;
+        // safari return string with comma separate values
+        const computedDuration = getComputedStyle(element).transitionDuration.split(",")[0]
+        const duration = Number(computedDuration.replace('s', '')) * 1000;
         setTimeout(() => {
             resolve()
         }, duration)

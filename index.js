@@ -9,7 +9,7 @@ export async function leave(element, animation = null) {
 }
 
 export async function toggle(element, animation = null) {
-    element.classList.contains('hidden') ? enter(element, animation) : leave(element, animation)
+    element.classList.contains('hidden') ? await enter(element, animation) : await leave(element, animation)
 }
 
 async function transition(direction, element, animation) {

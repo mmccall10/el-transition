@@ -1,11 +1,15 @@
-export async function enter(element, animation=null) {
+export async function enter(element, animation = null) {
     element.classList.remove('hidden')
     await transition('enter', element, animation)
 }
 
-export async function leave(element, animation=null) {
+export async function leave(element, animation = null) {
     await transition('leave', element, animation)
     element.classList.add('hidden')
+}
+
+export async function toggle(element, animation = null) {
+    element.classList.contains('hidden') ? enter(element, animation) : leave(element, animation)
 }
 
 async function transition(direction, element, animation) {
@@ -15,7 +19,7 @@ async function transition(direction, element, animation) {
     const genesis = dataset[transition] ? dataset[transition].split(" ") : [animationClass]
     const start = dataset[`${transition}Start`] ? dataset[`${transition}Start`].split(" ") : [`${animationClass}-start`]
     const end = dataset[`${transition}End`] ? dataset[`${transition}End`].split(" ") : [`${animationClass}-end`]
-    
+
     addClasses(element, genesis)
     addClasses(element, start)
     await nextFrame()

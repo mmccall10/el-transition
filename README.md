@@ -2,27 +2,32 @@
 
 ## Install
 ```bash
-npm install el-transition
+$ npm install el-transition
 ```
 
 ```
-yarn add el-transition
+$ yarn add el-transition
 ```
 
 ## Purpose
 The purpose of this package is to handle enter/leave transition using classes or data attributes. This is similar to the implementations you find in vue.js and alpine.js.
 
 ## Usage
-
 Both class based and dataset attributes are supported. 
 
-To hide and show elements you must have an implemenation of the class `hidden`. This class will be used to hide/show the element. 
+To hide and show elements an implemenation of the class `hidden` is required.  
 
-el-transition exports two async functions enter and leave. They expect an HTML DOM element as the first argument and optional animation name as the second. 
+```css
+.hidden {
+  display: none
+}
+```
+
+`el-transition` exports three async functions `enter`, `leave`, and `toggle`. Each function expects an HTML DOM element as the first argument and optional transition name as the second. 
 
 ```js
-import {enter, leave} from 'el-transition'
-
+// app.js
+import {enter, leave, toggle} from 'el-transition'
 
 function open() {
     enter(element).then(() => {
@@ -35,6 +40,11 @@ function close() {
     leave(element).then(() => {
         element.destroy();
     })
+}
+
+// calls enter or leave based on presence of the class hidden
+function toggle() {
+    toggle(element);
 }
 ```
 
@@ -78,27 +88,32 @@ When using dataset attributes el-transtion expects the following.
   </div>
 </div>
 ```
+
 ```js
-import {enter, leave} from 'el-transition'
+import {enter, leave, toggle} from 'el-transition'
 
 const dropdownMenu = document.getElementById("dropdown-menu")
 const dropdownBtn = document.getElementById("dropdown-btn")
 
+function openMenu() {
+  enter(dropdownMenu)
+}
+
+function closeMenu() {
+  leave(dropdownMenu)
+}
+
 function toggleDropdownMenu() {
-    if(dropdownMenu.classList.contains('hidden')) {
-        enter(dropdownMenu)
-    } else {
-        leave(dropdownMenu)
-    }
+    toggle(dropdownMenu)
 }
 
 dropdownBtn.addEventListener('click', toggleDropdownMenu)
 ```
 
-### Animation argument
-You can also specificy a transition classname and el-transtion will handle applying them at the correct stage. 
+### Transition Name Option
+You may specificy a transition name and el-transtion will handle applying the inferred css classses at the each stage. If data attributes are set, those will take precedence.
 
-Using the example animation `dropdown` we need to declare classes per transition stage. 
+Using the example transition name `dropdown` we need can declare a class per stage. 
 
 * .dropdown-enter: Applied during the entire entering phase.
 * .dropdown-enter-start: Added before element is inserted, removed one frame after element is inserted.
@@ -133,6 +148,7 @@ Using the example animation `dropdown` we need to declare classes per transition
   @apply transform opacity-0 scale-95;
 }
 ```
+
 ```html
 <!-- dropdown.html -->
 <div class="relative inline-block text-left">
@@ -155,17 +171,22 @@ Using the example animation `dropdown` we need to declare classes per transition
 ```
 
 ```js
-import {enter, leave} from 'el-transition'
+// app.js
+import {enter, leave, toggle} from 'el-transition'
 
 const dropdownMenu = document.getElementById("dropdown-menu")
 const dropdownBtn = document.getElementById("dropdown-btn")
 
+function openMenu() {
+  enter(dropdownMenu, 'dropdown')
+}
+
+function closeMenu() {
+  leave(dropdownMenu, 'dropdown')
+}
+
 function toggleDropdownMenu() {
-    if(dropdownMenu.classList.contains('hidden')) {
-        enter(dropdownMenu, 'dropdown')
-    } else {
-        leave(dropdownMenu, 'dropdown')
-    }
+    toggle(dropdownMenu, 'dropdown')
 }
 
 dropdownBtn.addEventListener('click', toggleDropdownMenu)

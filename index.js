@@ -1,15 +1,19 @@
-export async function enter(element, animation = null) {
+export async function enter(element, transitionName = null) {
     element.classList.remove('hidden')
-    await transition('enter', element, animation)
+    await transition('enter', element, transitionName)
 }
 
-export async function leave(element, animation = null) {
-    await transition('leave', element, animation)
+export async function leave(element, transitionName = null) {
+    await transition('leave', element, transitionName)
     element.classList.add('hidden')
 }
 
-export async function toggle(element, animation = null) {
-    element.classList.contains('hidden') ? await enter(element, animation) : await leave(element, animation)
+export async function toggle(element, transitionName = null) {
+    if (element.classList.contains('hidden')) {
+        await enter(element, transitionName)
+    } else {
+        await leave(element, transitionName)
+    }
 }
 
 async function transition(direction, element, animation) {

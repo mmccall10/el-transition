@@ -1,9 +1,17 @@
 export async function enter(element, transitionName = null) {
+    if(!element.classList.contains('hidden')) {
+      return
+    }
+
     element.classList.remove('hidden')
     await transition('enter', element, transitionName)
 }
 
 export async function leave(element, transitionName = null) {
+    if(element.classList.contains('hidden')) {
+      return
+    }
+
     await transition('leave', element, transitionName)
     element.classList.add('hidden')
 }

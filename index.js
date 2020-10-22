@@ -17,6 +17,7 @@ export async function toggle(element, transitionName = null) {
 }
 
 async function transition(direction, element, animation) {
+    const originalClasses = (element.getAttribute('class') || '').split(' ').filter(Boolean)
     const dataset = element.dataset
     const animationClass = animation ? `${animation}-${direction}` : direction
     let transition = `transition${direction.charAt(0).toUpperCase() + direction.slice(1)}`
@@ -27,11 +28,12 @@ async function transition(direction, element, animation) {
     addClasses(element, genesis)
     addClasses(element, start)
     await nextFrame()
-    removeClasses(element, start)
+    // Don't remove classes that were in the original class attribute.
+    removeClasses(element, start.filter(i => !originalClasses.includes(i)))
     addClasses(element, end);
     await afterTransition(element)
-    removeClasses(element, end)
-    removeClasses(element, genesis)
+    removeClasses(element, end.filter(i => !originalClasses.includes(i)))
+    removeClasses(element, genesis.filter(i => !originalClasses.includes(i)))
 }
 
 function addClasses(element, classes) {

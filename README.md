@@ -54,11 +54,9 @@ When using dataset attributes el-transtion expects the following.
 * data-transtion-enter: Applied during the entire entering phase.
 * data-transition-enter-start: Added before element is inserted, removed one frame after element is inserted.
 * data-transition-enter-end: Added one frame after element is inserted (at the same time enter-start is removed), removed when transition/animation finishes.
-* data-transition-enter-stash: Removed before the element is inserted, added back in after transition is finished
 * data-transition-leave: Applied during the entire leaving phase.
 * data-transition-leave-start: Added immediately when a leaving transition is triggered, removed after one frame.
 * data-transition-leave-end: Added one frame after a leaving transition is triggered (at the same time leave-start is removed), removed when the transition/animation finishes.
-* data-transition-leave-stash: Removed when the leave trainsition is triggered, added back in after transition is finished
 
 
 ### Example 

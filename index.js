@@ -21,13 +21,20 @@ async function transition(direction, element, animation) {
     const animationClass = animation ? `${animation}-${direction}` : direction
     let transition = `transition${direction.charAt(0).toUpperCase() + direction.slice(1)}`
     const genesis = dataset[transition] ? dataset[transition].split(" ") : [animationClass]
-    const stash = dataset[`${transition}Stash`] ? dataset[`${transition}Stash`].split(" ") : []
     const start = dataset[`${transition}Start`] ? dataset[`${transition}Start`].split(" ") : [`${animationClass}-start`]
     const end = dataset[`${transition}End`] ? dataset[`${transition}End`].split(" ") : [`${animationClass}-end`]
 
+    // if there's any overlap between the current set of classes and genesis/start/end,
+    // we should remove them before we start and add them back at the end
+    const stash = []
+    const current = new Set(element.classList.values())
+    genesis.forEach(cls => current.has(cls) && stash.push(cls))
+    start.forEach(cls => current.has(cls) && stash.push(cls))
+    end.forEach(cls => current.has(cls) && stash.push(cls))
+
+    removeClasses(element, stash)
     addClasses(element, genesis)
     addClasses(element, start)
-    removeClasses(element, stash)
     await nextFrame()
     removeClasses(element, start)
     addClasses(element, end);

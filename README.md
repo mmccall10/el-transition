@@ -51,7 +51,7 @@ function toggle() {
 ### Dataset Attributes
 When using dataset attributes el-transtion expects the following.
 
-* data-transtion-enter: Applied during the entire entering phase.
+* data-transition-enter: Applied during the entire entering phase.
 * data-transition-enter-start: Added before element is inserted, removed one frame after element is inserted.
 * data-transition-enter-end: Added one frame after element is inserted (at the same time enter-start is removed), removed when transition/animation finishes.
 * data-transition-leave: Applied during the entire leaving phase.

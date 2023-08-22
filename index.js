@@ -51,5 +51,5 @@ function nextFrame() {
 }
 
 function afterTransition(element) {
-    return new Promise.all(element.getAnimations().map(animation => animation.finished));
+    return Promise.all(element.getAnimations().map(animation => animation.finished));
 }

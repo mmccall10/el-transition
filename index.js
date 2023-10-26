@@ -1,18 +1,20 @@
-export async function enter(element, transitionName = null) {
-    element.classList.remove('hidden')
+export async function enter(element, transitionName = null, hideElement = true) {
+    hideElement && element.classList.remove('hidden')
     await transition('enter', element, transitionName)
+    element.dataset.transitioned = true
 }
 
-export async function leave(element, transitionName = null) {
+export async function leave(element, transitionName = null, hideElement = true) {
     await transition('leave', element, transitionName)
-    element.classList.add('hidden')
+    hideElement && element.classList.add('hidden')
+    element.removeAttribute('transitioned')
 }
 
-export async function toggle(element, transitionName = null) {
-    if (element.classList.contains('hidden')) {
-        await enter(element, transitionName)
+export async function toggle(element, transitionName = null, hideElement = true) {
+    if (element.dataset.transitioned) {
+      await leave(element, transitionName)
     } else {
-        await leave(element, transitionName)
+      await enter(element, transitionName)
     }
 }
 

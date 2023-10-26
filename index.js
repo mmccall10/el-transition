@@ -1,15 +1,19 @@
 export async function enter(element, transitionName = null) {
-    element.classList.remove('hidden')
-    await transition('enter', element, transitionName)
+  await transition('enter', element, transitionName, 'leave')
+  element.dataset.transitioned = true
 }
 
 export async function leave(element, transitionName = null) {
-    await transition('leave', element, transitionName)
-    element.classList.add('hidden')
+  if (!element.hasAttribute('data-transition-leave-final')) {
+    element.dataset.transitionLeaveFinal = 'hidden'
+  }
+
+  await transition('leave', element, transitionName, 'enter')
+  element.dataset.transitioned = false
 }
 
 export async function toggle(element, transitionName = null) {
-    if (element.classList.contains('hidden')) {
+    if (element.dataset.transitioned === 'true') {
         await enter(element, transitionName)
     } else {
         await leave(element, transitionName)
@@ -23,7 +27,11 @@ async function transition(direction, element, animation) {
     const genesis = dataset[transition] ? dataset[transition].split(" ") : [animationClass]
     const start = dataset[`${transition}Start`] ? dataset[`${transition}Start`].split(" ") : [`${animationClass}-start`]
     const end = dataset[`${transition}End`] ? dataset[`${transition}End`].split(" ") : [`${animationClass}-end`]
+    const previousAnimationClass = animation ? `${animation}-${previousDirection}` : previousDirection
+    let previousTransition = `transition${previousDirection.charAt(0).toUpperCase() + previousDirection.slice(1)}`
+    const previousFinal = dataset[`${previousTransition}Final`] ? dataset[`${previousTransition}Final`].split(" ") : [`${previousAnimationClass}-final`]
 
+    removeClasses(element, previousFinal)
     addClasses(element, genesis)
     addClasses(element, start)
     await nextFrame()
